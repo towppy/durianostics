@@ -1,6 +1,7 @@
 // LandingWeb.tsx
 import React from "react";
 import "../../styles/LandingWeb.css";
+import { API_URL } from '../appconf';
 
 const LandingWeb: React.FC = () => {
   return (
