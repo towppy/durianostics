@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-
 import { API_URL } from '../appconf';
-
 import '../../styles/Chatbot.css';
 
 interface Message {
@@ -17,6 +15,22 @@ const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Typewriter greeting at the start
+  useEffect(() => {
+    const greeting = 'Hello! I am your Durian AI Assistant 🍈 How can I help you today?';
+    let index = 0;
+
+    const typeGreeting = () => {
+      if (index <= greeting.length) {
+        setMessages([{ id: messageId++, sender: 'bot', text: greeting.slice(0, index) }]);
+        index++;
+        setTimeout(typeGreeting, 40); // speed of typing
+      }
+    };
+
+    typeGreeting();
+  }, []);
 
   // Scroll to bottom whenever messages update
   useEffect(() => {
@@ -35,14 +49,31 @@ const Chatbot: React.FC = () => {
       const res = await fetch(`${API_URL}/api/chatbot/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: input }] })
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: 'You are a Durian Diagnostics AI Assistant.' },
+            ...messages.map(m => ({
+              role: m.sender === 'user' ? 'user' : 'assistant',
+              content: m.text
+            })),
+            { role: 'user', content: input }
+          ]
+        })
       });
 
       const data = await res.json();
-      const botMessage: Message = { id: messageId++, sender: 'bot', text: data.message || data.answer || data.reply || 'No response' };
+      const botMessage: Message = {
+        id: messageId++,
+        sender: 'bot',
+        text: data.message || data.answer || data.reply || 'No response'
+      };
       setMessages(prev => [...prev, botMessage]);
     } catch (err) {
-      const botMessage: Message = { id: messageId++, sender: 'bot', text: 'Error: Could not reach server.' };
+      const botMessage: Message = {
+        id: messageId++,
+        sender: 'bot',
+        text: 'Error: Could not reach server.'
+      };
       setMessages(prev => [...prev, botMessage]);
     } finally {
       setLoading(false);
@@ -50,16 +81,12 @@ const Chatbot: React.FC = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      sendMessage();
-    }
+    if (e.key === 'Enter') sendMessage();
   };
 
   return (
     <div className="chatbot-page">
-      
       <main className="chatbot-main">
-        <h1>Chatbot</h1>
         <div className="chat-window">
           {messages.map(msg => (
             <div
@@ -71,6 +98,7 @@ const Chatbot: React.FC = () => {
           ))}
           <div ref={messagesEndRef}></div>
         </div>
+
         <div className="chat-input-area">
           <input
             type="text"
