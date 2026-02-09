@@ -12,6 +12,9 @@ import Header from './components/Header';
 
 
 function App() {
+  // Detect if user is on mobile
+  const isMobile = window.innerWidth <= 768;
+
   return (
     <Router>
       <Header />
@@ -21,7 +24,7 @@ function App() {
         <Route path="/signup" element={<AuthPage />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/forum" element={<Forum />} />
+        <Route path="/forum" element={<Forum isMobile={isMobile} />} />
         <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </Router>

@@ -4,7 +4,9 @@ load_dotenv(dotenv_path='.env')
 from flask import Flask
 from routes.auth import auth_bp, init_mail
 from routes.chatbot import chatbot_bp
+from routes.forum import forum_bp
 from flask_cors import CORS, cross_origin
+
 
 
 
@@ -16,8 +18,10 @@ app = Flask(__name__)
 # Maximum permissive CORS for all routes
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers=["Content-Type", "Authorization"], expose_headers=["Content-Type", "Authorization"], methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 init_mail(app)
+
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(chatbot_bp, url_prefix='/api')
+app.register_blueprint(forum_bp, url_prefix='/forum')
 
 # Ensure all OPTIONS requests get a valid response
 @app.route('/<path:path>', methods=['OPTIONS'])
