@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.env
+.venv
+env/
+venv/
+ENV/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# VSCode
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env.*
+.env
+
+# PyTorch/TF checkpoints
+*.ckpt
+*.pth
+*.h5
+
+# MySQL
+*.sql
+
+# Coverage
+htmlcov/
+.coverage
+.tox/
+.nox/
+
+# pytest
+.cache/
+
+# Migrations
+db.sqlite3
+migrations/
+
+# Others
+*.bak
+*.swp
+*.swo
