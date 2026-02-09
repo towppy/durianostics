@@ -23,9 +23,11 @@ const About: React.FC = () => {
   };
 
   const team: TeamMember[] = [
-    { name: 'Jane Doe', role: 'Co-Founder & CEO', imageUrl: '/images/team1.jpg' },
-    { name: 'John Smith', role: 'CTO', imageUrl: '/images/team2.jpg' },
-    { name: 'Emily Chen', role: 'AI Specialist', imageUrl: '/images/team3.jpg' },
+    { name: 'Aia A. Garcia', role: 'Group Leader', imageUrl: '/assets/images/aia.jpg' },
+    { name: 'Carl Evan T. Piad', role: 'Member 1', imageUrl: '/assets/images/evan.jpg' },
+    { name: 'Kathleen Mae R. Priol', role: 'Member 2', imageUrl: '/assets/images/kat.jpg' },
+    { name: 'Kevin R. Ofracio', role: 'Member 3', imageUrl: '/assets/images/kevin.png' },
+    { name: 'Prof. Pops V. Madriaga', role: 'Professor', imageUrl: '/assets/images/mam.png' },
   ];
 
   return (

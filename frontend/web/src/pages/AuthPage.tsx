@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/AuthPage.css';
+
 import Header from '../components/Header';
 import { API_URL } from '../appconf';
 
@@ -13,9 +14,11 @@ export default function AuthPage() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [message, setMessage] = useState('');
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
     setMessage('');
     if (mode === 'signup' && password !== confirmPassword) {
@@ -56,12 +59,19 @@ export default function AuthPage() {
     } else {
       setMessage(data.error || data.msg || 'Something went wrong');
     }
+    setLoading(false);
   };
 
   return (
     <div className="auth-container">
       <h2>{mode === 'login' ? 'Login' : 'Sign Up'}</h2>
-      <form onSubmit={handleSubmit} encType={mode === 'signup' ? 'multipart/form-data' : undefined}>
+     <form
+  key={mode} // 👈 forces animation when mode changes
+  className="auth-form"
+  onSubmit={handleSubmit}
+  encType={mode === 'signup' ? 'multipart/form-data' : undefined}
+>
+
         {mode === 'signup' && (
           <>
             <div>
@@ -98,7 +108,10 @@ export default function AuthPage() {
             </div>
           </>
         )}
-        <button type="submit">{mode === 'login' ? 'Login' : 'Sign Up'}</button>
+       <button type="submit" className={loading ? 'loading' : ''}>
+  {loading ? 'Please wait…' : mode === 'login' ? 'Login' : 'Sign Up'}
+</button>
+
       </form>
       <button
         className="switch-mode-btn"

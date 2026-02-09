@@ -7,6 +7,8 @@ import About from './pages/About';
 import Forum from './pages/Forum';
 import Chatbot from './pages/Chatbot';
 import Profile from './pages/Profile';
+import Scanner from './pages/Scanner';
+//import Analytics from './pages/Analytics';
 
 //header
 import Header from './components/Header';
@@ -28,6 +30,8 @@ function App() {
         <Route path="/forum" element={<Forum isMobile={isMobile} />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/scanner" element={<Scanner />} />
+        
       </Routes>
     </Router>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/Forum.css';
+import { useNavigate } from 'react-router-dom';
 
 interface ForumPost {
   id: number;
@@ -61,6 +62,7 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userId = user && user.email ? user.email : null;
+  const navigate = useNavigate();
 
   const handleUpvote = async (postId: number) => {
     if (!userId) {
@@ -179,6 +181,14 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
     return colors[category] || '#6b7280';
   };
 
+  const handleCreatePostClick = () => {
+    if (!userId) {
+      navigate('/auth', { state: { message: 'Please log in to post.' } });
+    } else {
+      setShowNewPostForm(true);
+    }
+  };
+
   return (
     <div className={isMobile ? "forum-page mobile" : "forum-page"}>
       <main className={isMobile ? "forum-main mobile" : "forum-main"}>
@@ -220,7 +230,8 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
 
           <button 
             className="create-post-button"
-            onClick={() => setShowNewPostForm(true)}
+            onClick={handleCreatePostClick}
+            title={!userId ? 'Sign in to post' : undefined}
           >
             + Create New Post
           </button>
@@ -259,7 +270,7 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
         )}
 
         {/* New Post Form */}
-        {showNewPostForm && (
+        {showNewPostForm && userId && (
           <div className="new-post-modal">
             <div className="modal-content">
               <div className="modal-header">

@@ -32,8 +32,7 @@ const Header: React.FC = () => {
         {/* Logo */}
         <div className="logo">
           <a href="/">
-            <div className="logo-icon">Y</div>
-            <span className="logo-text">Durianostics</span>
+            <img src="/assets/images/icon.png" alt="Durianostics Logo" className="logo-img" />
           </a>
         </div>
 
@@ -42,8 +41,13 @@ const Header: React.FC = () => {
           <a href="/" className={`nav-item${location.pathname === '/' ? ' current' : ''}`}>Home</a>
           <a href="/about" className={`nav-item${location.pathname === '/about' ? ' current' : ''}`}>About</a>
           <a href="/forum" className={`nav-item${location.pathname === '/forum' ? ' current' : ''}`}>Forum</a>
-          <a href="/chatbot" className={`nav-item${location.pathname === '/chatbot' ? ' current' : ''}`}>Chatbot</a>
-          <a href="/analytics" className={`nav-item${location.pathname === '/analytics' ? ' current' : ''}`}>Analytics</a>
+          {user && (
+            <>
+              <a href="/chatbot" className={`nav-item${location.pathname === '/chatbot' ? ' current' : ''}`}>Chatbot</a>
+              <a href="/scanner" className={`nav-item${location.pathname === '/scanner' ? ' current' : ''}`}>Scanner</a>
+              <a href="/analytics" className={`nav-item${location.pathname === '/analytics' ? ' current' : ''}`}>Analytics</a>
+            </>
+          )}
         </nav>
 
         {/* Desktop CTA/Profile */}
@@ -58,7 +62,7 @@ const Header: React.FC = () => {
           ) : (
             <>
               <a href="/auth" className="btn-signin">Sign In</a>
-              <a href="/auth" className="btn-signup">Get Started</a>
+          
             </>
           )}
         </div>
@@ -76,9 +80,13 @@ const Header: React.FC = () => {
         <a href="/" className={`nav-item${location.pathname === '/' ? ' current' : ''}`} onClick={toggleMobileMenu}>Home</a>
         <a href="/about" className={`nav-item${location.pathname === '/about' ? ' current' : ''}`} onClick={toggleMobileMenu}>About</a>
         <a href="/forum" className={`nav-item${location.pathname === '/forum' ? ' current' : ''}`} onClick={toggleMobileMenu}>Forum</a>
-        <a href="/chatbot" className={`nav-item${location.pathname === '/chatbot' ? ' current' : ''}`} onClick={toggleMobileMenu}>Chatbot</a>
-        <a href="/analytics" className={`nav-item${location.pathname === '/analytics' ? ' current' : ''}`} onClick={toggleMobileMenu}>Analytics</a>
-
+        {user && (
+          <>
+            <a href="/chatbot" className={`nav-item${location.pathname === '/chatbot' ? ' current' : ''}`} onClick={toggleMobileMenu}>Chatbot</a>
+            <a href="/scanner" className={`nav-item${location.pathname === '/scanner' ? ' current' : ''}`} onClick={toggleMobileMenu}>Scanner</a>
+            <a href="/analytics" className={`nav-item${location.pathname === '/analytics' ? ' current' : ''}`} onClick={toggleMobileMenu}>Analytics</a>
+          </>
+        )}
         {user ? (
           <div className="profile-header mobile-profile">
             <span className="welcome-user">Welcome, {user.name}</span>
@@ -89,7 +97,7 @@ const Header: React.FC = () => {
         ) : (
           <>
             <a href="/auth" className="btn-signin">Sign In</a>
-            <a href="/auth" className="btn-signup">Get Started</a>
+           
           </>
         )}
       </div>

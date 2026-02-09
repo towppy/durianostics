@@ -1,5 +1,6 @@
 import React from "react";
 import "../../styles/LandingWeb.css";
+import { Footer } from "../components/Footer";
 
 interface Article {
   title: string;
@@ -41,20 +42,25 @@ const LandingWeb: React.FC<LandingWebProps> = ({ heroImageUrl }) => {
   return (
     <div className="landing-web">
       {/* Hero Section */}
-      <section className="hero">
-        <img
-          src={heroImageUrl || '/assets/images/hero.jpg'}
-          alt="Durian Hero"
-          className="hero-img"
-        />
-        <div className="hero-content">
-          <h1>Welcome to Durianostics</h1>
-          <p>
-            AI-powered durian diagnostics to help you make informed decisions and enjoy the perfect fruit every time.
-          </p>
-          <button className="cta-button">Get Started</button>
-        </div>
-      </section>
+     <section className="hero">
+  <div className="hero-slider">
+    <div className="hero-slide" />
+    <div className="hero-slide" />
+    <div className="hero-slide" />
+    <div className="hero-slide" />
+  </div>
+
+  <div className="hero-overlay" />
+
+  <div className="hero-content">
+    <h1>Welcome to Durianostics</h1>
+    <p>
+      AI-powered durian diagnostics to help you make informed decisions
+      and enjoy the perfect fruit every time.
+    </p>
+    <button className="cta-button">Get Started</button>
+  </div>
+</section>
 
       {/* Featured Articles */}
       <section className="articles-section">
@@ -80,12 +86,8 @@ const LandingWeb: React.FC<LandingWebProps> = ({ heroImageUrl }) => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="cta">
-        <h2>Ready to get started?</h2>
-        <p>Sign up today and experience the difference!</p>
-        <button className="cta-button">Sign Up Now</button>
-      </section>
+      
+      <Footer />
     </div>
   );
 };
