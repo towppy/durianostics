@@ -1,0 +1,107 @@
+/* Center the auth container */
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+  color: #111827;
+}
+
+/* Form fields */
+.auth-container form > div {
+  margin-bottom: 16px;
+}
+
+.auth-container label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"],
+.auth-container input[type="file"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.auth-container input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* Submit button */
+.auth-container button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.auth-container button[type="submit"]:hover {
+  background: #2563eb;
+}
+
+/* Switch mode button */
+.switch-mode-btn {
+  width: 100%;
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: #4f8cff;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Message styles */
+.auth-message {
+  margin-top: 16px;
+  color: #e53e3e;
+  text-align: center;
+}
+
+.auth-token {
+  margin-top: 16px;
+  word-break: break-all;
+  color: #059669;
+  text-align: center;
+}
+
+/* File input customization */
+.auth-container input[type="file"] {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .auth-container {
+    padding: 24px;
+    margin: 40px 16px;
+  }
+
+  .auth-container h2 {
+    font-size: 1.5rem;
+  }
+}

@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
+import { useLocation } from 'react-router-dom';
+
+interface User {
+  name: string;
+  image_url: string;
+}
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) setUser(JSON.parse(userData));
   }, []);
 
   return (
@@ -18,65 +30,34 @@ const Header: React.FC = () => {
         <div className="logo">
           <a href="/">
             <div className="logo-icon">Y</div>
-            <span className="logo-text">YourBrand</span>
+            <span className="logo-text">Durianostics</span>
           </a>
         </div>
 
         {/* Navigation */}
         <nav className="nav-links">
-          <div
-            className="dropdown"
-            onMouseEnter={() => setActiveDropdown('products')}
-            onMouseLeave={() => setActiveDropdown(null)}
-          >
-            <button className="dropbtn">
-              Products <span className="arrow">▼</span>
-            </button>
-            {activeDropdown === 'products' && (
-              <div className="dropdown-content">
-                <a href="/products/feature-1">
-                  <div className="title">Feature One</div>
-                  <div className="desc">Description here</div>
-                </a>
-                <a href="/products/feature-2">
-                  <div className="title">Feature Two</div>
-                  <div className="desc">Description here</div>
-                </a>
-                <a href="/products/feature-3">
-                  <div className="title">Feature Three</div>
-                  <div className="desc">Description here</div>
-                </a>
-              </div>
-            )}
-          </div>
-
-          <a href="/pricing" className="nav-item">Pricing</a>
-
-          <div
-            className="dropdown"
-            onMouseEnter={() => setActiveDropdown('resources')}
-            onMouseLeave={() => setActiveDropdown(null)}
-          >
-            <button className="dropbtn">
-              Resources <span className="arrow">▼</span>
-            </button>
-            {activeDropdown === 'resources' && (
-              <div className="dropdown-content">
-                <a href="/blog">Blog</a>
-                <a href="/docs">Documentation</a>
-                <a href="/help">Help Center</a>
-                <a href="/community">Community</a>
-              </div>
-            )}
-          </div>
-
-          <a href="/about" className="nav-item">About</a>
+          <a href="/" className={`nav-item${location.pathname === '/' ? ' current' : ''}`}>Home</a>
+          <a href="/about" className={`nav-item${location.pathname === '/about' ? ' current' : ''}`}>About</a>
+          <a href="/forum" className={`nav-item${location.pathname === '/forum' ? ' current' : ''}`}>Forum</a>
+          <a href="/chatbot" className={`nav-item${location.pathname === '/chatbot' ? ' current' : ''}`}>Chatbot</a>
+          <a href="/analytics" className={`nav-item${location.pathname === '/analytics' ? ' current' : ''}`}>Analytics</a>
         </nav>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons or Profile */}
         <div className="cta-buttons">
-          <a href="/login" className="btn-signin">Sign In</a>
-          <a href="/signup" className="btn-signup">Get Started</a>
+          {user ? (
+            <div className="profile-header">
+              <span className="welcome-user">Welcome, {user.name}</span>
+              <a href="/profile" className="profile-pic-link">
+                <img src={user.image_url} alt="Profile" className="profile-pic" />
+              </a>
+            </div>
+          ) : (
+            <>
+              <a href="/auth" className="btn-signin">Sign In</a>
+              <a href="/auth" className="btn-signup">Get Started</a>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}

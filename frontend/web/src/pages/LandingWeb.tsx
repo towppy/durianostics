@@ -2,21 +2,18 @@
 import React from "react";
 import "../../styles/LandingWeb.css";
 
-import Header from "../components/Header";
-
 const LandingWeb: React.FC = () => {
   return (
     <>
-      <Header />
       <div className="landing-web">
       {/* Hero Section */}
       <section className="hero">
         <div className="decor-circle circle1"></div>
         <div className="decor-circle circle2"></div>
 
-        <h1>Welcome to Our Product</h1>
+        <h1>Welcome to Durianostics</h1>
         <p>
-          Discover amazing features that make your life easier. Fast, reliable, and beautifully designed.
+          See how you can determine your durians with just a few clicks. Our AI-powered platform provides accurate and fast durian diagnostics to help you make informed decisions.
         </p>
         <button className="cta-button">Get Started</button>
       </section>
