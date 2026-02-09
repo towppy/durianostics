@@ -11,6 +11,8 @@ interface ForumPost {
   upvotes: number;
   comments: number;
   tags: string[];
+  upvoters?: string[];
+  comment_list?: { author: string; content: string; date: string }[];
 }
 
 interface NewPostData {
@@ -38,6 +40,8 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
     category: 'General',
     tags: ''
   });
+  const [commentInputs, setCommentInputs] = useState<{ [key: number]: string }>({});
+  const [commentLoading, setCommentLoading] = useState<{ [key: number]: boolean }>({});
 
   const categories = ['All', 'General', 'Technology', 'Education', 'Storage', 'Discussion', 'Market', 'Health'];
 
@@ -55,10 +59,34 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
       });
   }, []);
 
-  const handleUpvote = (postId: number) => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, upvotes: post.upvotes + 1 } : post
-    ));
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userId = user && user.email ? user.email : null;
+
+  const handleUpvote = async (postId: number) => {
+    if (!userId) {
+      setError('Sign in to upvote');
+      return;
+    }
+    const post = posts.find(p => p.id === postId);
+    const alreadyUpvoted = post?.upvoters?.includes(userId);
+    try {
+      const res = await fetch(`http://localhost:5000/forum/posts/${postId}/upvote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, remove: alreadyUpvoted })
+      });
+      if (!res.ok) {
+        const errData = await res.json();
+        setError(errData.error || 'Failed to upvote');
+        return;
+      }
+      const updated = await res.json();
+      setPosts(posts => posts.map(post =>
+        post.id === postId ? { ...post, upvotes: updated.upvotes, upvoters: updated.upvoters } : post
+      ));
+    } catch (err) {
+      setError('Failed to upvote');
+    }
   };
 
   const handleSubmitPost = async (e: React.FormEvent) => {
@@ -93,6 +121,41 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
       setError('Failed to create post');
     }
     setLoading(false);
+  };
+
+  const handleSubmitComment = async (postId: number) => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user || !user.name) {
+      setError('Sign in to comment');
+      return;
+    }
+    const comment = commentInputs[postId]?.trim();
+    if (!comment) return;
+    setCommentLoading(l => ({ ...l, [postId]: true }));
+    try {
+      const res = await fetch(`http://localhost:5000/forum/posts/${postId}/comment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ author: user.name, content: comment })
+      });
+      if (!res.ok) {
+        setError('Failed to comment');
+        setCommentLoading(l => ({ ...l, [postId]: false }));
+        return;
+      }
+      const updated = await res.json();
+      setPosts(posts => posts.map(post =>
+        post.id === postId ? { ...post, comments: updated.comments, comment_list: updated.comment_list } : post
+      ));
+      setCommentInputs(inputs => ({ ...inputs, [postId]: '' }));
+    } catch (err) {
+      setError('Failed to comment');
+    }
+    setCommentLoading(l => ({ ...l, [postId]: false }));
+  };
+
+  const handleCommentChange = (postId: number, value: string) => {
+    setCommentInputs(inputs => ({ ...inputs, [postId]: value }));
   };
 
   const filteredPosts = posts.filter(post => {
@@ -296,7 +359,7 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
                   <div className="forum-post" key={post.id}>
                     <div className="post-votes">
                       <button 
-                        className="upvote-button"
+                        className={`upvote-button${post.upvoters && userId && post.upvoters.includes(userId) ? ' upvoted' : ''}`}
                         onClick={() => handleUpvote(post.id)}
                       >
                         ↑
@@ -335,6 +398,35 @@ const Forum: React.FC<ForumProps> = ({ isMobile }) => {
                         
                         <div className="post-stats">
                           <span className="post-comments">💬 {post.comments} comments</span>
+                        </div>
+                      </div>
+
+                      <div className="post-comments-section">
+                        <div className="comments-list">
+                          {(post.comment_list || []).map((c, idx) => (
+                            <div key={idx} className="comment-item">
+                              <span className="comment-author">{c.author}</span>
+                              <span className="comment-date">{new Date(c.date).toLocaleDateString()}</span>
+                              <div className="comment-content">{c.content}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="comment-form">
+                          <input
+                            type="text"
+                            placeholder="Add a comment..."
+                            value={commentInputs[post.id] || ''}
+                            onChange={e => handleCommentChange(post.id, e.target.value)}
+                            disabled={commentLoading[post.id]}
+                            className="comment-input"
+                          />
+                          <button
+                            onClick={() => handleSubmitComment(post.id)}
+                            disabled={commentLoading[post.id] || !(commentInputs[post.id] || '').trim()}
+                            className="comment-submit"
+                          >
+                            {commentLoading[post.id] ? 'Posting...' : 'Post'}
+                          </button>
                         </div>
                       </div>
                     </div>

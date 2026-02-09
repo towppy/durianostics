@@ -1,57 +1,92 @@
-// LandingWeb.tsx
 import React from "react";
 import "../../styles/LandingWeb.css";
-import { API_URL } from '../appconf';
 
-const LandingWeb: React.FC = () => {
+interface Article {
+  title: string;
+  description: string;
+  imageUrl: string;
+  link: string;
+  external?: boolean;
+}
+
+interface LandingWebProps {
+  heroImageUrl?: string;
+}
+
+const articles: Article[] = [
+  {
+    title: "Understanding Durian Ripeness",
+    description: "Learn how to identify the perfect durian using AI diagnostics.",
+    imageUrl: "/assets/images/article1.jpg",
+    link: "https://example.com/durian-ripeness",
+    external: true,
+  },
+  {
+    title: "Top Durian Varieties in 2026",
+    description: "A complete guide to the most popular durian varieties this year.",
+    imageUrl: "/assets/images/article2.jpg",
+    link: "/articles/top-varieties",
+    external: false,
+  },
+  {
+    title: "AI in Agriculture",
+    description: "Discover how AI is transforming fruit quality analysis.",
+    imageUrl: "/assets/images/article3.jpg",
+    link: "https://example.com/ai-agriculture",
+    external: true,
+  },
+];
+
+const LandingWeb: React.FC<LandingWebProps> = ({ heroImageUrl }) => {
   return (
-    <>
-      <div className="landing-web">
+    <div className="landing-web">
       {/* Hero Section */}
       <section className="hero">
-        <div className="decor-circle circle1"></div>
-        <div className="decor-circle circle2"></div>
-
-        <h1>Welcome to Durianostics</h1>
-        <p>
-          See how you can determine your durians with just a few clicks. Our AI-powered platform provides accurate and fast durian diagnostics to help you make informed decisions.
-        </p>
-        <button className="cta-button">Get Started</button>
+        <img
+          src={heroImageUrl || '/assets/images/hero.jpg'}
+          alt="Durian Hero"
+          className="hero-img"
+        />
+        <div className="hero-content">
+          <h1>Welcome to Durianostics</h1>
+          <p>
+            AI-powered durian diagnostics to help you make informed decisions and enjoy the perfect fruit every time.
+          </p>
+          <button className="cta-button">Get Started</button>
+        </div>
       </section>
 
-      {/* Features Section */}
-      <section className="features">
-        <h2>Features</h2>
-        <div className="feature-grid">
-          <div className="feature-card">
-            <div className="icon">⚡</div>
-            <h3>Fast Performance</h3>
-            <p>Lightning-fast speed so you can get things done efficiently.</p>
-          </div>
-          <div className="feature-card">
-            <div className="icon">🔒</div>
-            <h3>Secure</h3>
-            <p>Your data stays safe with advanced security features.</p>
-          </div>
-          <div className="feature-card">
-            <div className="icon">✨</div>
-            <h3>User-Friendly</h3>
-            <p>Intuitive interface designed to make your workflow seamless.</p>
-          </div>
+      {/* Featured Articles */}
+      <section className="articles-section">
+        <h2>Featured Articles</h2>
+        <div className="articles-grid">
+          {articles.map((article, idx) => (
+            <a
+              href={article.link}
+              key={idx}
+              className="article-card"
+              target={article.external ? "_blank" : "_self"}
+              rel={article.external ? "noopener noreferrer" : undefined}
+            >
+              <div className="article-image">
+                <img src={article.imageUrl} alt={article.title} />
+              </div>
+              <div className="article-content">
+                <h3>{article.title}</h3>
+                <p>{article.description}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="cta">
-        <div className="decor-circle circle3"></div>
-        <div className="decor-circle circle4"></div>
-
         <h2>Ready to get started?</h2>
         <p>Sign up today and experience the difference!</p>
         <button className="cta-button">Sign Up Now</button>
       </section>
-      </div>
-    </>
+    </div>
   );
 };
 

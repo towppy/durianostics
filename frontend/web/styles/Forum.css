@@ -36,6 +36,8 @@
 
 .forum-header.mobile {
   padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .forum-header::before {
@@ -69,6 +71,9 @@
   display: flex;
   gap: 3rem;
   margin-top: 2rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
 }
 
 .stat {
@@ -97,6 +102,8 @@
   gap: 1rem;
   margin-bottom: 2rem;
   align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .search-box {
@@ -213,6 +220,8 @@
   flex-direction: column;
   align-items: center;
   min-width: 60px;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .upvote-button {
@@ -235,6 +244,13 @@
   border-color: #3b82f6;
   color: white;
   transform: scale(1.1);
+}
+
+.upvote-button.upvoted {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+  box-shadow: 0 0 0 2px #3b82f6;
 }
 
 .upvote-count {
@@ -323,6 +339,65 @@
 .post-comments {
   color: #64748b;
   font-weight: 500;
+}
+
+/* Comment Section */
+.post-comments-section {
+  margin-top: 1.5rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem;
+}
+.comments-list {
+  margin-bottom: 0.75rem;
+}
+.comment-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+}
+.comment-item:last-child {
+  border-bottom: none;
+}
+.comment-author {
+  font-weight: 600;
+  color: #2563eb;
+  margin-right: 0.5rem;
+}
+.comment-date {
+  color: #64748b;
+  font-size: 0.85em;
+  margin-left: 0.5rem;
+}
+.comment-content {
+  margin-top: 0.2rem;
+  color: #374151;
+}
+.comment-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.comment-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 1rem;
+}
+.comment-submit {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.comment-submit:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
 }
 
 /* Modal */
@@ -617,20 +692,28 @@
   .create-post-button {
     width: 100%;
     text-align: center;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
   }
 
   .forum-post {
     flex-direction: column;
+    padding: 1rem;
   }
 
   .post-votes {
     flex-direction: row;
     justify-content: center;
     gap: 1rem;
+    min-width: 0;
+    margin-bottom: 0.5rem;
   }
 
   .upvote-button {
     order: 2;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 
   .upvote-count {
@@ -640,6 +723,9 @@
 
   .modal-content {
     padding: 1.5rem;
+    max-width: 100vw;
+    width: 100vw;
+    border-radius: 0;
   }
 
   .topics-grid {
@@ -647,21 +733,86 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .forum-page.mobile, .forum-page {
+    padding: 0.5rem;
+  }
+  .forum-main.mobile, .forum-main {
+    max-width: 100vw;
+    padding: 0;
+  }
+  .forum-header.mobile, .forum-header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .forum-title-section h1 {
     font-size: 2rem;
   }
-
+  .forum-stats {
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+  }
+  .forum-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .create-post-button {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+  }
   .forum-categories {
     gap: 0.25rem;
+    flex-wrap: wrap;
   }
-
   .category-button {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
   }
-
+  .forum-posts {
+    gap: 1rem;
+  }
+  .forum-post {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .post-votes {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1rem;
+    min-width: 0;
+    margin-bottom: 0.5rem;
+  }
+  .upvote-button {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
   .post-title {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+  }
+  .post-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .post-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+  }
+  .modal-content {
+    padding: 1rem;
+    max-width: 100vw;
+    width: 100vw;
+    border-radius: 0;
+  }
+  .topics-grid {
+    grid-template-columns: 1fr;
   }
 }

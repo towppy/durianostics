@@ -6,6 +6,7 @@ import AuthPage from './pages/AuthPage';
 import About from './pages/About';
 import Forum from './pages/Forum';
 import Chatbot from './pages/Chatbot';
+import Profile from './pages/Profile';
 
 //header
 import Header from './components/Header';
@@ -26,6 +27,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/forum" element={<Forum isMobile={isMobile} />} />
         <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );
